@@ -1,0 +1,19 @@
+# Python files and caches
+*.py
+!server.py
+__pycache__/
+*.pyc
+
+# Logs
+*.log
+server.log
+
+# Test and temporary directories
+test.js
+test_*.html
+test_dir/
+temp_scripts/
+
+# OS Specific
+.DS_Store
+Thumbs.db

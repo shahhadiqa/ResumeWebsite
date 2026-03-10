@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deekas - Share Your Nail Art Designs</title>
+    <link rel="stylesheet" href="styles.css?v=65">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+    <script src="script.js?v=65" defer></script>
+</head>
+
+<body>
+    <header class="app-header">
+        <div class="header-container">
+            <div class="logo" onclick="switchView('home')" style="cursor:pointer;">
+                <h1><span class="title-main">DEEKAS</span></h1>
+                <p>Share Your Nail Art Designs & Get Inspired</p>
+            </div>
+
+            <div class="header-nav">
+                <button class="nav-btn active" id="nav-home" onclick="switchView('home')">Home</button>
+                <button class="nav-btn" id="nav-manicure" onclick="switchView('manicure')">Manicure</button>
+                <button class="nav-btn" id="nav-pedicure" onclick="switchView('pedicure')">Pedicure</button>
+                <button class="nav-btn" id="nav-trending" onclick="switchView('trending')"><i class="fas fa-fire"></i>
+                    Trending</button>
+            </div>
+
+            <div class="header-search">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search ideas (e.g. chrome, micro french)...">
+            </div>
+
+            <div class="header-actions">
+                <button class="upload-btn" onclick="openUploadModal()">
+                    <i class="fas fa-plus"></i> Share Design
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+
+        <!-- HOME VIEW -->
+        <div id="homeView">
+            <section class="hero-section">
+                <h2 class="hero-title">Discover your next look.</h2>
+                <p class="hero-subtitle">Explore thousands of trendy manicure and pedicure ideas, save your favorites,
+                    and share your own creations.</p>
+            </section>
+
+            <section class="home-group">
+                <div class="group-header">
+                    <h2>Featured & Trending</h2>
+                    <button class="view-all-btn" onclick="switchView('trending')">View All <i
+                            class="fas fa-arrow-right"></i></button>
+                </div>
+                <div class="horizontal-scroll" id="featuredScroll">
+                    <!-- Injected by JS -->
+                </div>
+            </section>
+
+            <section class="home-group">
+                <div class="group-header">
+                    <h2>Popular Manicure Styles</h2>
+                    <button class="view-all-btn" onclick="switchView('manicure')">Explore Manicures <i
+                            class="fas fa-arrow-right"></i></button>
+                </div>
+                <div class="category-cards-grid" id="manicureCategoriesGrid">
+                    <!-- Injected by JS -->
+                </div>
+            </section>
+
+            <section class="home-group">
+                <div class="group-header">
+                    <h2>Popular Pedicure Styles</h2>
+                    <button class="view-all-btn" onclick="switchView('pedicure')">Explore Pedicures <i
+                            class="fas fa-arrow-right"></i></button>
+                </div>
+                <div class="category-cards-grid" id="pedicureCategoriesGrid">
+                    <!-- Injected by JS -->
+                </div>
+            </section>
+
+            <section class="home-group">
+                <div class="group-header">
+                    <h2>Recent Community Uploads</h2>
+                </div>
+                <div class="masonry-grid" id="recentUploadsGrid">
+                    <!-- Injected by JS -->
+                </div>
+            </section>
+        </div>
+
+        <!-- GALLERY VIEW (Browse Mani/Pedi/Search) -->
+        <div id="galleryView" style="display: none;">
+            <div class="gallery-header">
+                <h2 id="galleryTitle">Explore All</h2>
+                <p id="gallerySubtitle">Find the perfect design.</p>
+            </div>
+
+            <div class="categories-wrapper">
+                <div class="categories" id="mainCategoriesBar">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+
+            <div class="categories-wrapper sub-filters-wrapper" id="subFiltersWrapper" style="display: none;">
+                <div class="categories sub-categories" id="subCategoriesBar">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+
+            <section class="gallery-section">
+                <div class="masonry-grid" id="masonryGrid">
+                    <!-- Injected by JS -->
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- Post Detail Modal Overlay -->
+    <div id="postDetailModal" class="post-detail-modal">
+        <div class="detail-content">
+            <span class="detail-close" onclick="closeDetailModal()">&times;</span>
+            <div class="detail-img-container">
+                <img id="detailImg" src="" alt="Post Image">
+            </div>
+            <div class="detail-info">
+                <div class="detail-header-info">
+                    <h2 class="detail-title" id="detailTitle">Title</h2>
+                    <p id="detailDescription"
+                        style="margin-bottom: 20px; color: var(--text-muted); font-size: 1.05rem;"></p>
+                    <div class="detail-author">
+                        <div class="author-avatar" id="detailAuthorAvatar">U</div>
+                        <div>
+                            <span style="display:block; font-weight:600;" id="detailAuthorName">Author</span>
+                            <span style="font-size:0.85rem; color:var(--text-muted);" id="detailDate">Just now</span>
+                        </div>
+                    </div>
+                    <div class="detail-tags" id="detailTags">
+                        <!-- Tags injected by JS -->
+                    </div>
+                </div>
+
+                <div class="detail-actions-large">
+                    <button class="detail-btn like-btn" id="detailLikeBtn" onclick="toggleDetailLike()">
+                        <i class="fas fa-heart"></i> <span id="detailLikeCount">0</span>
+                    </button>
+                    <button class="detail-btn primary" onclick="savePost(event, true)">
+                        <i class="fab fa-pinterest"></i> Save to Pinterest
+                    </button>
+                    <button class="detail-btn" onclick="sharePost('detail', event)">
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
+                </div>
+
+                <div class="detail-comments-section">
+                    <h3 style="margin-bottom: 15px; font-size:1.1rem;">Comments</h3>
+                    <div style="color:var(--text-muted); font-size:0.9rem; font-style:italic;">No comments yet. Be the
+                        first to compliment this design!</div>
+                    <div class="add-comment">
+                        <input type="text" placeholder="Add a comment..."
+                            style="width:100%; padding:10px; border:1px solid var(--border-color); border-radius:30px; margin-top:15px; font-family:var(--font-body);">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Modal -->
+    <div id="uploadModal" class="upload-modal">
+        <div class="upload-content">
+            <span class="upload-close" onclick="closeUploadModal()">&times;</span>
+            <div style="padding: 40px; display: flex; flex-direction: column; height: 100%;">
+                <h2 style="font-family: var(--font-heading); margin-bottom: 20px;">Share Your Nail Art</h2>
+                <div class="upload-form">
+                    <div class="file-drop-area" id="dropZone">
+                        <i class="fas fa-cloud-upload-alt demo-icon"></i>
+                        <p>Drag & drop image here or click to browse</p>
+                        <input type="file" id="imageInput" accept="image/*" hidden>
+                        <img id="uploadPreview" src="" alt="Preview"
+                            style="display:none; width:100%; border-radius:12px; margin-top:15px;" />
+                    </div>
+
+                    <div class="form-row">
+                        <input type="text" id="postTitle" placeholder="Title for your design" class="modal-input"
+                            style="width: 100%;">
+                    </div>
+
+                    <div class="form-row" style="margin-top: 10px; margin-bottom: 10px;">
+                        <textarea id="postDesc" placeholder="Description for your design (optional)" class="modal-input"
+                            style="width: 100%; min-height: 80px; resize: vertical; font-family: var(--font-body);"></textarea>
+                    </div>
+
+                    <div class="form-row" style="display:flex; gap:10px;">
+                        <select id="postType" class="modal-input" style="flex: 1;" onchange="updateUploadCategories()">
+                            <option value="manicure">Manicure</option>
+                            <option value="pedicure">Pedicure</option>
+                        </select>
+
+                        <select id="postCategory" class="modal-input" style="flex: 1;"
+                            onchange="updateUploadSubcategories()">
+                            <!-- Populated by JS -->
+                        </select>
+                    </div>
+
+                    <select id="postSubcategory" class="modal-input" style="display: none;">
+                        <option value="all">All Designs</option>
+                    </select>
+
+                    <button class="submit-btn" onclick="submitPost()">Post Design</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
