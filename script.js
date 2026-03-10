@@ -902,32 +902,59 @@ function setupUploadForm() {
     imageInput.addEventListener('change', async function () {
         if (this.files && this.files[0]) {
             let file = this.files[0];
-
-            dropZone.querySelector('p').innerText = 'Uploading to server...';
-
+            const isHeic = file.type === 'image/heic' || file.type === 'image/heif' || file.name.toLowerCase().endsWith('.heic');
+            
+            dropZone.querySelector('p').innerText = 'Processing image...';
+            
             const formData = new FormData();
             formData.append('image', file);
 
             try {
+                // 1. Attempt the fast backend server approach first (Works locally)
                 const response = await fetch('/upload', {
                     method: 'POST',
                     body: formData
                 });
-
-                if (!response.ok) throw new Error("Upload failed");
+                
+                if (!response.ok) throw new Error("Server not responding or unavailable");
                 const data = await response.json();
-
-                // Store actual URL from the server instead of Local Storage Base64 or Blob URL
+                
                 window.lastUploadedUrl = data.url;
                 uploadPreview.src = data.url;
-                uploadPreview.style.display = 'block';
-                dropZone.querySelector('p').style.display = 'none';
-                dropZone.querySelector('.demo-icon').style.display = 'none';
-
-            } catch (e) {
-                alert('Error uploading image to local server. Please try again.');
-                dropZone.querySelector('p').innerText = 'Drag & drop image here or click to browse';
+                
+            } catch (serverError) {
+                console.log("Server upload unavailable (likely on GitHub Pages). Falling back to local browser processing...");
+                
+                // 2. Fallback local processing (Works on GitHub Pages)
+                let finalBlob = file;
+                
+                if (isHeic && typeof heic2any !== 'undefined') {
+                    dropZone.querySelector('p').innerText = 'Converting iPhone image locally...';
+                    try {
+                        const convertedBlob = await heic2any({ blob: file, toType: "image/jpeg", quality: 0.8 });
+                        finalBlob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
+                    } catch (e) {
+                        alert('Error converting iPhone HEIC image locally. Please try a standard JPG/PNG.');
+                        dropZone.querySelector('p').innerText = 'Drag & drop image here or click to browse';
+                        return;
+                    }
+                }
+                
+                // Convert blob to Base64 to save properly in localStorage on static hosts
+                const base64data = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result);
+                    reader.readAsDataURL(finalBlob);
+                });
+                
+                window.lastUploadedUrl = base64data;
+                uploadPreview.src = base64data;
             }
+            
+            // Shared success UI flow manually applied after either approach succeeds
+            uploadPreview.style.display = 'block';
+            dropZone.querySelector('p').style.display = 'none';
+            dropZone.querySelector('.demo-icon').style.display = 'none';
         }
     });
 
