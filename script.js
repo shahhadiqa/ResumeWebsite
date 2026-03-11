@@ -910,22 +910,29 @@ function setupUploadForm() {
             formData.append('image', file);
 
             try {
-                // 1. Attempt the fast backend server approach first (Works locally)
-                const response = await fetch('/upload', {
-                    method: 'POST',
-                    body: formData
-                });
+                // Only attempt backend upload if we are running locally
+                const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
                 
-                if (!response.ok) throw new Error("Server not responding or unavailable");
-                const data = await response.json();
-                
-                window.lastUploadedUrl = data.url;
-                uploadPreview.src = data.url;
+                if (isLocalhost) {
+                    const response = await fetch('/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    if (!response.ok) throw new Error("Server not responding or unavailable");
+                    const data = await response.json();
+                    
+                    window.lastUploadedUrl = data.url;
+                    uploadPreview.src = data.url;
+                } else {
+                    // Force jump to catch block on GitHub Pages
+                    throw new Error("Static host detected. Skipping backend upload.");
+                }
                 
             } catch (serverError) {
-                console.log("Server upload unavailable (likely on GitHub Pages). Falling back to local browser processing...");
+                console.log("Using local browser processing:", serverError.message);
                 
-                // 2. Fallback local processing (Works on GitHub Pages)
+                // Fallback local processing
                 let finalBlob = file;
                 
                 if (isHeic && typeof heic2any !== 'undefined') {
