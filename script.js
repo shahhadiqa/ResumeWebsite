@@ -949,17 +949,33 @@ function setupUploadForm() {
                     }
                     
                     // Convert blob to Base64 to save properly in localStorage on static hosts
-                    const base64data = await new Promise((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.onload = () => resolve(reader.result);
-                        reader.onerror = () => reject(new Error("Browser failed to read the image file."));
-                        reader.readAsDataURL(finalBlob);
-                    });
+                    let base64data = null;
+                    
+                    // Safari Lockdown Mode heavily disables FileReader APIs on static sites
+                    if (typeof FileReader !== 'undefined') {
+                        base64data = await new Promise((resolve, reject) => {
+                            const reader = new FileReader();
+                            reader.onload = () => resolve(reader.result);
+                            reader.onerror = () => reject(new Error("Browser failed to read the image file."));
+                            reader.readAsDataURL(finalBlob);
+                        });
+                    } else {
+                        // Fallback completely to ObjectURLs if FileReader is blocked by Apple Security
+                        console.warn("FileReader API blocked by Safari Lockdown Mode. Defaulting to ObjectURL.");
+                        base64data = URL.createObjectURL(finalBlob);
+                        
+                        // We must immediately display it because object URLs are temporary
+                        uploadPreview.src = base64data; 
+                        window.lastUploadedUrl = base64data;
+                    }
                     
                     if (!base64data) throw new Error("Image conversion resulted in empty data.");
                     
-                    window.lastUploadedUrl = base64data;
-                    uploadPreview.src = base64data;
+                    // only re-assign if it successfully parsed as a string (FileReader)
+                    if(typeof base64data === 'string' && base64data.startsWith('data:image')) {
+                        window.lastUploadedUrl = base64data;
+                        uploadPreview.src = base64data;
+                    }
                 } catch (fallbackError) {
                     alert("Upload error: " + fallbackError.message);
                     dropZone.querySelector('p').innerText = 'Drag & drop image here or click to browse';
