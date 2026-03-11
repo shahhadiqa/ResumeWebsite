@@ -974,22 +974,42 @@ function setupUploadForm() {
                             reader.readAsDataURL(finalBlob);
                         });
                     } catch (e) {
-                         // Fallback completely to ObjectURLs if FileReader is blocked by Apple Security
-                        console.warn("FileReader API blocked. Defaulting to temporary ObjectURL.", e);
-                        base64data = URL.createObjectURL(finalBlob);
+                         // Fallback completely to Canvas if FileReader is blocked by Apple Security
+                        console.warn("FileReader API blocked. Safely reading and converting the image to Base64 using HTML5 Canvas...", e);
                         
-                        // We must immediately display it because object URLs are temporary
-                        uploadPreview.src = base64data; 
-                        window.lastUploadedUrl = base64data;
+                        base64data = await new Promise((resolve, reject) => {
+                            const tempImg = new Image();
+                            tempImg.onload = () => {
+                                const canvas = document.createElement('canvas');
+                                // Scale down massive iPhone photos automatically to prevent LocalStorage crashing
+                                const MAX_WIDTH = 1200;
+                                let width = tempImg.width;
+                                let height = tempImg.height;
+                                
+                                if (width > MAX_WIDTH) {
+                                    height = Math.round(height * (MAX_WIDTH / width));
+                                    width = MAX_WIDTH;
+                                }
+                                
+                                canvas.width = width;
+                                canvas.height = height;
+                                const ctx = canvas.getContext('2d');
+                                ctx.drawImage(tempImg, 0, 0, width, height);
+                                
+                                // Return as a standard, permanent web-safe JPG base64 string
+                                const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                                resolve(dataUrl);
+                            };
+                            tempImg.onerror = () => reject(new Error("Canvas failed to process the image."));
+                            tempImg.src = URL.createObjectURL(finalBlob);
+                        });
                     }
                     
                     if (!base64data) throw new Error("Image conversion resulted in empty data.");
                     
-                    // only re-assign if it successfully parsed as a string (FileReader)
-                    if(typeof base64data === 'string' && base64data.startsWith('data:image')) {
-                        window.lastUploadedUrl = base64data;
-                        uploadPreview.src = base64data;
-                    }
+                    // Assign the permanent string
+                    window.lastUploadedUrl = base64data;
+                    uploadPreview.src = base64data;
                 } catch (fallbackError) {
                     alert("Upload error: " + fallbackError.message);
                     dropZone.querySelector('p').innerText = 'Drag & drop image here or click to browse';
