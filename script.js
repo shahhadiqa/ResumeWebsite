@@ -932,30 +932,39 @@ function setupUploadForm() {
             } catch (serverError) {
                 console.log("Using local browser processing:", serverError.message);
                 
-                // Fallback local processing
-                let finalBlob = file;
-                
-                if (isHeic && typeof heic2any !== 'undefined') {
-                    dropZone.querySelector('p').innerText = 'Converting iPhone image locally...';
-                    try {
-                        const convertedBlob = await heic2any({ blob: file, toType: "image/jpeg", quality: 0.8 });
-                        finalBlob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
-                    } catch (e) {
-                        alert('Error converting iPhone HEIC image locally. Please try a standard JPG/PNG.');
-                        dropZone.querySelector('p').innerText = 'Drag & drop image here or click to browse';
-                        return;
+                try {
+                    // Fallback local processing
+                    let finalBlob = file;
+                    
+                    if (isHeic && typeof heic2any !== 'undefined') {
+                        dropZone.querySelector('p').innerText = 'Converting iPhone image locally...';
+                        try {
+                            const convertedBlob = await heic2any({ blob: file, toType: "image/jpeg", quality: 0.8 });
+                            finalBlob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
+                        } catch (e) {
+                            alert('Error converting iPhone HEIC image locally. Please try a standard JPG/PNG.');
+                            dropZone.querySelector('p').innerText = 'Drag & drop image here or click to browse';
+                            return;
+                        }
                     }
+                    
+                    // Convert blob to Base64 to save properly in localStorage on static hosts
+                    const base64data = await new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = () => reject(new Error("Browser failed to read the image file."));
+                        reader.readAsDataURL(finalBlob);
+                    });
+                    
+                    if (!base64data) throw new Error("Image conversion resulted in empty data.");
+                    
+                    window.lastUploadedUrl = base64data;
+                    uploadPreview.src = base64data;
+                } catch (fallbackError) {
+                    alert("Upload error: " + fallbackError.message);
+                    dropZone.querySelector('p').innerText = 'Drag & drop image here or click to browse';
+                    return;
                 }
-                
-                // Convert blob to Base64 to save properly in localStorage on static hosts
-                const base64data = await new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.onloadend = () => resolve(reader.result);
-                    reader.readAsDataURL(finalBlob);
-                });
-                
-                window.lastUploadedUrl = base64data;
-                uploadPreview.src = base64data;
             }
             
             // Shared success UI flow manually applied after either approach succeeds
