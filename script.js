@@ -280,18 +280,18 @@ const remoteImages = {
 
 // Create stateful arrays that can be POPpED to guarantee ZERO REPETITION
 const imagePools = {
-    'pedicure_glossy': ['images/categories/glossy_pedicure.png', ...(remoteImages['glossy pedicure'] || [])],
-    'pedicure_minimal': ['images/categories/minimal_pedicure.png', ...(remoteImages['minimal pedicure'] || [])],
-    'pedicure_bold': ['images/categories/bold_pedicure.png', ...(remoteImages['bold pedicure'] || [])],
-    'pedicure_french': ['images/categories/french_pedicure.png', ...(remoteImages['french pedicure'] || [])],
-    'pedicure_floral': ['images/categories/floral_pedicure.png', ...(remoteImages['floral pedicure'] || [])],
-    'pedicure_bridal': ['french_pedicure.png', ...(remoteImages['bridal pedicure'] || [])],
-    'pedicure_seasonal': ['images/categories/seasonal_pedicure.png', ...(remoteImages['seasonal pedicure'] || [])],
-    'pedicure_chrome': ['images/categories/chrome_pedicure.png', ...(remoteImages['chrome pedicure'] || [])],
-    'pedicure_glitter': ['images/categories/glitter_pedicure.png', ...(remoteImages['glitter pedicure'] || [])],
-    'pedicure_default': ['french_pedicure.png'],
+    'pedicure_glossy': ['assets/glossy_pedicure.png', ...(remoteImages['glossy pedicure'] || [])],
+    'pedicure_minimal': ['assets/minimal_pedicure.png', ...(remoteImages['minimal pedicure'] || [])],
+    'pedicure_bold': ['assets/bold_pedicure.png', ...(remoteImages['bold pedicure'] || [])],
+    'pedicure_french': ['assets/french_pedicure.png', ...(remoteImages['french pedicure'] || [])],
+    'pedicure_floral': ['assets/floral_pedicure.png', ...(remoteImages['floral pedicure'] || [])],
+    'pedicure_bridal': ['assets/french_pedicure.png', ...(remoteImages['bridal pedicure'] || [])],
+    'pedicure_seasonal': ['assets/seasonal_pedicure.png', ...(remoteImages['seasonal pedicure'] || [])],
+    'pedicure_chrome': ['assets/chrome_pedicure.png', ...(remoteImages['chrome pedicure'] || [])],
+    'pedicure_glitter': ['assets/glitter_pedicure.png', ...(remoteImages['glitter pedicure'] || [])],
+    'pedicure_default': ['assets/french_pedicure.png'],
 
-    'manicure_french': ['images/categories/french_manicure_v3.png', ...(remoteImages['french manicure'] || [])],
+    'manicure_french': ['assets/french_manicure_v3.png', ...(remoteImages['french manicure'] || [])],
     'manicure_chrome': [...(remoteImages['chrome nails'] || [])],
     'manicure_minimal': [...(remoteImages['minimal'] || [])],
     'manicure_floral': [...(remoteImages['floral nails'] || [])],
@@ -307,11 +307,15 @@ function getRemoteImage(cat, type) {
 
     // GUARANTEE NO REPETITION! Pop the image from the array so it's gone forever.
     if (imagePools[key] && imagePools[key].length > 0) {
-        return imagePools[key].shift(); // remove from start
+        let img = imagePools[key].shift();
+        // If it's a local filename (no http), prepend the assets folder
+        if (img && !img.startsWith('http')) {
+            return 'assets/' + img;
+        }
+        return img;
     }
 
-    // If we run out...
-    return null; // Return null to signal EXHAUSTED
+    return null;
 }
 
 const appData = {
@@ -320,37 +324,37 @@ const appData = {
         categories: {
             french: {
                 name: "French Manicure",
-                image: "french_manicure_v2.png",
+                image: "assets/french_manicure_v2.png",
                 subs: []
             },
             chrome: {
                 name: "Chrome",
-                image: "chrome.png",
+                image: "assets/chrome.png",
                 subs: []
             },
             minimal: {
                 name: "Minimal",
-                image: "minimal_nails.png",
+                image: "assets/minimal_nails.png",
                 subs: []
             },
             bridal: {
                 name: "Bridal",
-                image: "bridal.png",
+                image: "assets/bridal.png",
                 subs: []
             },
             floral: {
                 name: "Floral",
-                image: "floral.png",
+                image: "assets/floral.png",
                 subs: []
             },
             bold: {
                 name: "Bold & Colorful",
-                image: "bold.png",
+                image: "assets/bold.png",
                 subs: []
             },
             seasonal: {
                 name: "Seasonal",
-                image: "seasonal.png",
+                image: "assets/seasonal.png",
                 subs: []
             }
         }
@@ -360,47 +364,47 @@ const appData = {
         categories: {
             french: {
                 name: "French Pedicure",
-                image: "french_pedicure.png",
+                image: "assets/french_pedicure.png",
                 subs: []
             },
             glossy: {
                 name: "Glossy Colors",
-                image: "glossy_pedicure.png",
+                image: "assets/glossy_pedicure.png",
                 subs: []
             },
             floral: {
                 name: "Floral Pedicure",
-                image: "floral_pedicure.png",
+                image: "assets/floral_pedicure.png",
                 subs: []
             },
             minimal: {
                 name: "Minimal",
-                image: "minimal_pedicure.png",
+                image: "assets/minimal_pedicure.png",
                 subs: []
             },
             bold: {
                 name: "Bold & Bright",
-                image: "bold_pedicure.png",
+                image: "assets/bold_pedicure.png",
                 subs: []
             },
             bridal: {
                 name: "Bridal",
-                image: "french_pedicure.png",
+                image: "assets/french_pedicure.png",
                 subs: []
             },
             seasonal: {
                 name: "Seasonal",
-                image: "seasonal_pedicure.png",
+                image: "assets/seasonal_pedicure.png",
                 subs: []
             },
             chrome: {
                 name: "Chrome",
-                image: "chrome_pedicure.png",
+                image: "assets/chrome_pedicure.png",
                 subs: []
             },
             glitter: {
                 name: "Glitter",
-                image: "glitter_pedicure.png",
+                image: "assets/glitter_pedicure.png",
                 subs: []
             }
         }

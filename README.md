@@ -1,6 +1,6 @@
 # Deekas - Premium Nail Art Gallery & Community
 
-![Deekas Header](screenshots/homepage_hero.png)
+![Deekas Header](assets/homepage_hero.png)
 
 Deekas is a state-of-the-art, responsive web application designed for discovering, curating, and sharing high-end nail art. This project serves as a comprehensive technical showcase, featuring a custom image processing pipeline, algorithmic trending systems, and a polished, "Pinterest-inspired" user experience.
 
@@ -11,11 +11,11 @@ Deekas is a state-of-the-art, responsive web application designed for discoverin
 ## 📸 Technical Showcase
 
 ### Intuitive Multi-Category Discovery
-![Discovery](screenshots/homepage_categories.png)
+![Discovery](assets/homepage_categories.png)
 Users can browse curated galleries ranging from Minimalist to Bold Neon styles, with seamless categorical transitions and infinite-scrolling architecture.
 
 ### Dynamic Community Hub
-![Gallery](screenshots/manicure_gallery.png)
+![Gallery](assets/manicure_gallery.png)
 A robust masonry-grid layout that intelligently manages high-resolution assets while maintaining high performance and smooth animations.
 
 ---
@@ -54,10 +54,7 @@ Developed a specialized **HTML5 Canvas conversion layer** specifically to bypass
 ├── styles.css       # Premium design system & tokens
 ├── script.js        # Core App Logic & Gallery Engine
 ├── server.py        # HEIC Processing Pipeline
-├── images/          # Structured Asset Repository
-│   ├── manicure/    # Categorized mani-styles
-│   └── pedicure/    # Categorized pedi-styles
-└── screenshots/     # Showcase media for documentation
+└── assets/          # Consolidated High-End Assets & Showcase Media
 ```
 
 ---
