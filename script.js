@@ -942,9 +942,19 @@ function setupUploadForm() {
                             const convertedBlob = await heic2any({ blob: file, toType: "image/jpeg", quality: 0.8 });
                             finalBlob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
                         } catch (e) {
-                            alert('Error converting iPhone HEIC image locally. Please try a standard JPG/PNG.');
-                            dropZone.querySelector('p').innerText = 'Drag & drop image here or click to browse';
-                            return;
+                            // In Safari Lockdown Mode, heic2any completely fails because Canvas/Workers are blocked!
+                            // Safari natively supports HEIC, so we can just ignore the error.
+                            // Google Chrome physically does not, so Chrome users still need a warning.
+                            const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+                            
+                            if (isChrome) {
+                                alert('Error: Google Chrome cannot convert iPhone HEIC images directly. Please use a JPG/PNG.');
+                                dropZone.querySelector('p').innerText = 'Drag & drop image here or click to browse';
+                                return;
+                            } else {
+                                console.warn("heic2any conversion blocked by browser. Proceeding with raw native Apple HEIC rendering...", e);
+                                // The script simply does nothing here, allowing finalBlob to remain the raw HEIC 'file'
+                            }
                         }
                     }
                     
