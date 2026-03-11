@@ -951,17 +951,21 @@ function setupUploadForm() {
                     // Convert blob to Base64 to save properly in localStorage on static hosts
                     let base64data = null;
                     
-                    // Safari Lockdown Mode heavily disables FileReader APIs on static sites
-                    if (typeof FileReader !== 'undefined') {
+                    try {
+                        // Attempt to safely invoke the FileReader API.
+                        // In Safari Lockdown Mode, the word FileReader doesn't even exist, which triggers an instant fatal error. 
                         base64data = await new Promise((resolve, reject) => {
-                            const reader = new FileReader();
+                            if (typeof window.FileReader === 'undefined') {
+                                throw new Error("FileReader API is missing (Lockdown Mode?)");
+                            }
+                            const reader = new window.FileReader();
                             reader.onload = () => resolve(reader.result);
                             reader.onerror = () => reject(new Error("Browser failed to read the image file."));
                             reader.readAsDataURL(finalBlob);
                         });
-                    } else {
-                        // Fallback completely to ObjectURLs if FileReader is blocked by Apple Security
-                        console.warn("FileReader API blocked by Safari Lockdown Mode. Defaulting to ObjectURL.");
+                    } catch (e) {
+                         // Fallback completely to ObjectURLs if FileReader is blocked by Apple Security
+                        console.warn("FileReader API blocked. Defaulting to temporary ObjectURL.", e);
                         base64data = URL.createObjectURL(finalBlob);
                         
                         // We must immediately display it because object URLs are temporary
