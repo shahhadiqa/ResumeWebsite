@@ -1,62 +1,68 @@
-# Deekas - Share Your Nail Art Designs
+# Deekas - Premium Nail Art Gallery & Community
 
-A modern, responsive web application for discovering, curating, and sharing beautiful nail art inspiration. Designed with a vibrant, community-focused UI, Deekas allows users to browse trending designs across various categories and securely upload their own custom photos directly from their devices.
+![Deekas Header](screenshots/homepage_hero.png)
 
-## Features
+Deekas is a state-of-the-art, responsive web application designed for discovering, curating, and sharing high-end nail art. This project serves as a comprehensive technical showcase, featuring a custom image processing pipeline, algorithmic trending systems, and a polished, "Pinterest-inspired" user experience.
 
-- **Dynamic Galleries**: Infinite-scrolling feeds powered by a robust backend architecture, featuring seamless categorical filtering (Manicures, Pedicures, Seasonal, Minimalist, etc.).
-- **Trending System**: Algorithmic "Trending 🔥" section that curates the most popular designs based on simulated user interactions.
-- **Custom User Uploads**: Fully functional upload interface allowing users to share their own creations to the platform.
-- **macOS Native HEIC Processing**: A custom Python backend server specifically built to intercept Apple iPhone `.heic` photos, converting them securely to web-safe JPGs using native macOS `sips` commands before they hit the browser limit.
-- **Persistent LocalStorage**: A frictionless data persistence layer utilizing browser `localStorage`, ensuring user uploads and interactions permanently survive browser refreshes.
-- **Clean Aesthetic**: A beautiful, minimalist pink-and-white UI featuring interactive modal popups, CSS grid layouts, and smooth animations.
+[**✨ View Live Demo**](https://shahhadiqa.github.io/ResumeWebsite/)
 
-## Tech Stack
+---
 
-- **Frontend**: Vanilla HTML5, CSS3 (Flexbox/Grid), and Modern JavaScript (ES6+).
-- **Backend Infrastructure**: Python 3 `http.server` customized for multi-part file processing.
-- **Image Processing Engine**: Native macOS Terminal `sips` operations for zero-dependency image conversion, alongside client-side fallback `heic2any` pipelines.
-- **Database Architecture**: Static JSON deployment merged seamlessly with frontend `localStorage` databases.
+## 📸 Technical Showcase
 
-## Getting Started
+### Intuitive Multi-Category Discovery
+![Discovery](screenshots/homepage_categories.png)
+Users can browse curated galleries ranging from Minimalist to Bold Neon styles, with seamless categorical transitions and infinite-scrolling architecture.
 
-### Prerequisites
-- macOS Environment (for HEIC conversion support)
-- Python 3.x installed
+### Dynamic Community Hub
+![Gallery](screenshots/manicure_gallery.png)
+A robust masonry-grid layout that intelligently manages high-resolution assets while maintaining high performance and smooth animations.
 
-### Installation & Running
+---
 
-1. Clone this repository to your local machine:
-   ```bash
-   git clone https://github.com/shahhadiqa/ResumeWebsite.git
-   cd ResumeWebsite
-   ```
+## 🛠️ Key Technical Features
 
-2. Start the custom Python backend server to enable full upload support:
-   ```bash
-   python3 server.py
-   ```
+### 1. Advanced Image Processing Engine
+Built a custom Python backend (utilizing native macOS `sips` commands) to handle **Apple HEIC to JPG conversion**. This allows users to upload photos directly from their iPhones without browser-side compatibility issues.
+- **Workflow**: Intercepts multi-part file uploads → Normalizes format via native CLI → Serves web-safe assets to the client.
 
-3. Open your web browser and navigate directly to:
-   ```
-   http://localhost:8000
-   ```
+### 2. Algorithmic "Trending 🔥" System
+Implemented a dynamic curation engine that simulates social engagement. The "Trending" feed uses a custom weight-based algorithm to prioritize popular designs based on simulated user interactions, ensuring the home feed always feels fresh and alive.
 
-4. You can now browse the interactive galleries or click "+ SHARE DESIGN" to test the HEIC conversion pipeline!
+### 3. Safari Lockdown Mode Compatibility
+Developed a specialized **HTML5 Canvas conversion layer** specifically to bypass Safari's "Lockdown Mode" restrictions on file readers, ensuring 100% cross-browser compatibility for uploads.
 
-## File Structure
+### 4. Data Persistence & Performance
+- **Local Persistence**: Integrated `localStorage` as a fast, zero-latency database for user interactions and custom uploads.
+- **Lazy Loading**: Implemented optimized asset loading to ensure fast initial paint times despite a rich media library.
 
+---
+
+## 💻 Tech Stack
+
+- **Frontend**: ES6+ JavaScript, CSS3 (Custom Grid/Flexbox), HTML5
+- **Backend**: Python 3 (Custom HTTP Processor)
+- **Tooling**: native macOS `sips` for Image Normalization, `heic2any` Fallback Engine
+- **Storage Architecture**: Static JSON deployment merged with client-side persistence
+
+---
+
+## 📂 Project Architecture
+
+```bash
+├── index.html       # Single-Page App entry point
+├── styles.css       # Premium design system & tokens
+├── script.js        # Core App Logic & Gallery Engine
+├── server.py        # HEIC Processing Pipeline
+├── images/          # Structured Asset Repository
+│   ├── manicure/    # Categorized mani-styles
+│   └── pedicure/    # Categorized pedi-styles
+└── screenshots/     # Showcase media for documentation
 ```
-├── index.html       # Application entry point and UI structure
-├── styles.css       # Core design system and responsive properties
-├── script.js        # Dynamic routing, gallery logic, and API calls
-├── server.py        # Python HTTP Server and Image Processing pipeline
-├── images.json      # Pre-curated image database
-└── uploads/         # Local secure storage for user image submissions
-```
 
-## Future Scope
+---
 
-- Expanding the backend JSON storage to a full cloud-based dynamic database.
-- Integrating user authentication (OAuth).
-- Implementing a real-time 'like' synchronization system across client sessions.
+## 🚀 Future Roadmap
+- [ ] **Cloud Migration**: Transitioning local storage to a Firebase/PostgreSQL cloud layer.
+- [ ] **AI-Tagging**: Implementing auto-tagging for uploaded designs using Computer Vision.
+- [ ] **Social Integration**: OAuth login and real-time community engagement features.

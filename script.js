@@ -280,18 +280,18 @@ const remoteImages = {
 
 // Create stateful arrays that can be POPpED to guarantee ZERO REPETITION
 const imagePools = {
-    'pedicure_glossy': ['glossy_pedicure.png', ...(remoteImages['glossy pedicure'] || [])],
-    'pedicure_minimal': ['minimal_pedicure.png', ...(remoteImages['minimal pedicure'] || [])],
-    'pedicure_bold': ['bold_pedicure.png', ...(remoteImages['bold pedicure'] || [])],
-    'pedicure_french': ['french_pedicure.png', ...(remoteImages['french pedicure'] || [])],
-    'pedicure_floral': ['floral_pedicure.png', ...(remoteImages['floral pedicure'] || [])],
+    'pedicure_glossy': ['images/categories/glossy_pedicure.png', ...(remoteImages['glossy pedicure'] || [])],
+    'pedicure_minimal': ['images/categories/minimal_pedicure.png', ...(remoteImages['minimal pedicure'] || [])],
+    'pedicure_bold': ['images/categories/bold_pedicure.png', ...(remoteImages['bold pedicure'] || [])],
+    'pedicure_french': ['images/categories/french_pedicure.png', ...(remoteImages['french pedicure'] || [])],
+    'pedicure_floral': ['images/categories/floral_pedicure.png', ...(remoteImages['floral pedicure'] || [])],
     'pedicure_bridal': ['french_pedicure.png', ...(remoteImages['bridal pedicure'] || [])],
-    'pedicure_seasonal': ['seasonal_pedicure.png', ...(remoteImages['seasonal pedicure'] || [])],
-    'pedicure_chrome': ['chrome_pedicure.png', ...(remoteImages['chrome pedicure'] || [])],
-    'pedicure_glitter': ['glitter_pedicure.png', ...(remoteImages['glitter pedicure'] || [])],
+    'pedicure_seasonal': ['images/categories/seasonal_pedicure.png', ...(remoteImages['seasonal pedicure'] || [])],
+    'pedicure_chrome': ['images/categories/chrome_pedicure.png', ...(remoteImages['chrome pedicure'] || [])],
+    'pedicure_glitter': ['images/categories/glitter_pedicure.png', ...(remoteImages['glitter pedicure'] || [])],
     'pedicure_default': ['french_pedicure.png'],
 
-    'manicure_french': ['french_manicure_v3.png', ...(remoteImages['french manicure'] || [])],
+    'manicure_french': ['images/categories/french_manicure_v3.png', ...(remoteImages['french manicure'] || [])],
     'manicure_chrome': [...(remoteImages['chrome nails'] || [])],
     'manicure_minimal': [...(remoteImages['minimal'] || [])],
     'manicure_floral': [...(remoteImages['floral nails'] || [])],

@@ -1,0 +1,16 @@
+**ACADEMIC PROJECTS**
+
+**TransUnion Capstone Project – AI Risk Assessment Pipeline**               Chicago, IL
+*Project Lead – LLM Integration & Triage*                                  *January 2026 - Present*
+- Designed an AI-driven triage pipeline in Python using Google's Gemma 2 9B model via NVIDIA NIM APIs to support automated risk assessment of Android code updates
+- Developed a Retrieval-Augmented Generation (RAG) system by parsing and chunking complex Kotlin code repositories into vector databases (Supabase/pgvector) to provide contextual insights for the LLM
+- Integrated automated workflows using GitHub Actions CI/CD to trigger the AI agent on new code changes, parsing JSON outputs to dynamically update risk dashboards and database tables
+
+**Deekas: Full-Stack Nail Art Inspiration Platform**                       Chicago, IL
+*Lead Developer & UI Designer*                                             *March 2026*
+- [Live Site](https://shahhadiqa.github.io/ResumeWebsite/) | [GitHub Repository](https://github.com/shahhadiqa/ResumeWebsite)
+- Engineered a responsive, community-driven web application featuring dynamic CSS grid galleries, infinite-scroll feeds, and categorized filtering to showcase trending nail art designs.
+- Developed a robust image upload pipeline utilizing a custom Python backend server and macOS `sips` operations for zero-dependency conversion of proprietary Apple `.HEIC` photos into web-safe formats.
+- Designed a frictionless data persistence layer utilizing browser `localStorage`, ensuring user uploads and interactions permanently survive browser refreshes without requiring external database dependencies.
+
+**Charlandra Strategic Consulting**                                        Chicago, IL
