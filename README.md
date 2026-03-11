@@ -29,10 +29,7 @@ Built a custom Python backend (utilizing native macOS `sips` commands) to handle
 ### 2. Algorithmic "Trending 🔥" System
 Implemented a dynamic curation engine that simulates social engagement. The "Trending" feed uses a custom weight-based algorithm to prioritize popular designs based on simulated user interactions, ensuring the home feed always feels fresh and alive.
 
-### 3. Safari Lockdown Mode Compatibility
-Developed a specialized **HTML5 Canvas conversion layer** specifically to bypass Safari's "Lockdown Mode" restrictions on file readers, ensuring 100% cross-browser compatibility for uploads.
-
-### 4. Data Persistence & Performance
+### 3. Data Persistence & Performance
 - **Local Persistence**: Integrated `localStorage` as a fast, zero-latency database for user interactions and custom uploads.
 - **Lazy Loading**: Implemented optimized asset loading to ensure fast initial paint times despite a rich media library.
 
